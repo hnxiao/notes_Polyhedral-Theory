@@ -1,2 +1,2 @@
-notes_Polyhedral-Theory
-=======================
+Draft notes on Polyhedral Theory
+================================
