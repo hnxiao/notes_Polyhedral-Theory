@@ -1,0 +1,284 @@
+
+\documentclass{article}
+
+\setlength{\oddsidemargin}{0.05 in}
+\setlength{\evensidemargin}{-0.05 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{9.5 in}
+\setlength{\headsep}{0.25 in}
+\setlength{\parskip}{0.1 in}
+
+%
+% ADD PACKAGES here:
+\usepackage [usenames] {color}
+\definecolor {infocolor} {rgb} {0.6,0.6,0.6}
+\definecolor {steel blue}{rgb}{0.274510,0.509804,0.705882}
+\everymath{\color{steel blue}}
+%\everydisplay{\color{steel blue}}
+%
+
+\usepackage{amsmath,amsfonts,amssymb,enumerate,graphicx}
+
+%
+% The following commands set up the lecnum (lecture number)
+% counter and make various numbering schemes work relative
+% to the lecture number.
+%
+\newcounter{lecnum}
+\renewcommand{\thepage}{\thelecnum-\arabic{page}}
+\renewcommand{\thesection}{\thelecnum.\arabic{section}}
+\renewcommand{\theequation}{\thelecnum.\arabic{equation}}
+\renewcommand{\thefigure}{\thelecnum.\arabic{figure}}
+\renewcommand{\thetable}{\thelecnum.\arabic{table}}
+
+\DeclareMathOperator{\rk}{rk}
+
+\newcommand{\tr}{{\mbox{\tiny $\top$}}}
+\newcommand{\tleq}{{\mbox{\tiny $\leqslant$}}}
+\newcommand{\teq}{{\mbox{\tiny $=$}}}
+
+%
+% The following macro is used to generate the header.
+%
+\newcommand{\lecture}[2]{
+   \pagestyle{myheadings}
+   \thispagestyle{plain}
+   \newpage
+   \setcounter{lecnum}{#1}
+   \setcounter{page}{1}
+   \noindent
+   \begin{center}
+       \vbox{\vspace{2mm}
+         \hbox {\leftline{\Large LECTURE #1: \hfill}}
+         \vspace{3mm}
+         \hbox {\leftline{\Large #2 \hfill}}
+         \vspace{4mm}
+         \hrule
+         \vspace{3mm}
+         \hbox to 6.5in { {{\large Polyhedral Theory}  \hfill April 2013} }
+         \vspace{3mm}
+        }
+   \end{center}
+   \markboth{LECTURE #1: #2}{LECTURE #1: #2}
+   \pagenumbering{arabic}
+   \vspace*{4mm}
+}
+%
+% Convention for citations is authors' initials followed by the year.
+% For example, to cite a paper by Leighton and Maggs you would type
+% \cite{LM89}, and to cite a paper by Strassen you would type \cite{S69}.
+% (To avoid bibliography problems, for now we redefine the \cite command.)
+% Also commands that create a suitable format for the reference list.
+\renewcommand{\cite}[1]{[#1]}
+\def\beginrefs{\begin{list}%
+        {[\arabic{equation}]}{\usecounter{equation}
+         \setlength{\leftmargin}{2.0truecm}\setlength{\labelsep}{0.4truecm}%
+         \setlength{\labelwidth}{1.6truecm}}}
+\def\endrefs{\end{list}}
+\def\bibentry#1{\item[\hbox{[#1]}]}
+
+%Use this command for a figure; it puts a figure in wherever you want it.
+%usage: \fig{NUMBER}{SPACE-IN-INCHES}{CAPTION}
+\newcommand{\fig}[3]{
+    		\vspace{#2}
+			\begin{center}
+			Figure \thelecnum.#1:~#3
+			\end{center}
+	}
+% Use these for theorems, lemmas, proofs, etc.
+\newtheorem{theorem}{Theorem}[lecnum]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newenvironment{proof}{{\it Proof.}}{ \hfill $\square$}
+
+% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+
+\def\R{{\mathbb R}}
+\def\Q{{\mathbb Q}}
+\def\K{{\mathbb K}}
+
+\begin{document}
+%FILL IN THE RIGHT INFO.
+%\lecture{**LECTURE-NUMBER**}{**DATE**}{**LECTURER**}{**SCRIBE**}
+\lecture{2}{THE STRUCTURE OF POLYHEDRA}
+%\footnotetext{These notes are partially based on those of Nigel Mansell.}
+
+% **** YOUR NOTES GO HERE:
+
+% Some general latex examples and examples making use of the
+% macros follow.
+%**** IN GENERAL, BE BRIEF. LONG SCRIBE NOTES, NO MATTER HOW WELL WRITTEN,
+%**** ARE NEVER READ BY ANYBODY.
+
+\section{Implicit equalities and redundant constraints}
+An inequality $a^\tr x\leq\beta$ from $Ax\leq b$ is called an \emph{\textbf{implicit equality}} (in $Ax\leq b$) if $a^\tr x=\beta$ for all $x$ satisfying $Ax\leq b$. We use the following notation:
+\begin{itemize}
+  \item $A^\teq x\leq b^\teq$ is the system of implicit equalities in $Ax\leq b$
+  \item $A^\tleq x\leq b^\tleq$ is the system of all other inequalities in $Ax \leq b$.
+\end{itemize}
+
+For notation simplicity, we call the index set of these implicit inequalities \emph{\textbf{equality set}}(\emph{\textbf{active set}}) of $P$ and it is denoted by $\mbox{eq}(P)$, i.e.,
+\begin{equation}
+\mbox{eq}(P):=\{i\in [m]~|~A_{i*}x=\beta_i~\mbox{for all}~x\in P\}
+\end{equation}
+
+In the following, a point $x$ satisfies $Ax<b$ if and only if $a_i^\tr x<\beta_i$ for all $1\leq i\leq m$, where $a_1^\tr,\dots,a_m^\tr$ are the rows of $A$.
+
+\begin{lemma}
+Let $P=\{x\in \R^n\  | \ Ax\leq b\}$ be a nonempty polyhedron. There exists a point $x\in P$ with $A^\tleq x< b^\tleq$.
+\end{lemma}
+\begin{proof}
+Suppose that the inequalities in $A\tleq x\leq b\tleq$ are $a_1^\tr x\leq \beta_1, \dots, a_k^\tr x\leq \beta_k$. For each $1\leq i\leq k$, there exists an $x_i\in P$ with $a_i^\tr x_i<\beta_i$. Thus their barycenter $x=\frac{1}{k}(x_1+\dots+x_k)$ is a point of $P$ satisfying $A\tleq x< b\tleq$.
+\end{proof}
+
+For notation simplicity, we call a point satisfying Lemma 8.1 an \emph{\textbf{inner point}}.
+
+\emph{\textbf{interior point}}
+
+
+
+\section{Characteristic cone and lineality space}
+The \emph{\textbf{characteristic cone}} of $P$, denoted by char.cone($P$), is the polyhedral cone
+$$\mbox{char.cone}(P):=\{y\in \K^n|x+y\in P\mbox{~for all~}x \mbox{~in~} P\}=\{y\in\K^n|Ay\leq 0\}.$$
+Characteristic cone is also referred to as \emph{\textbf{recession cone}}.
+
+\begin{lemma}[Properties of characteristic cone] \hfill
+  \begin{enumerate}
+    \item[\emph{(i)}] $y\in$ \emph{char.cone($P$)} if and only if there is an $x$ in $P$ such that $x+\lambda y\in P$ for all $\lambda\geq 0$;
+    \item[\emph{(ii)}] $P+\mbox{\emph{char.cone($P$)}}=P$;
+    \item[\emph{(iii)}] $P$ is bounded is and only if \emph{char.cone($P$)}=$\{0\}$;
+    \item[\emph{(iv)}] if $P=Q+C$, with $Q$  a polytope and $C$ a polyhedral cone, then $C=$\emph{char.cone($P$)}.
+  \end{enumerate}
+\end{lemma}
+The nonzero vectors in char.cone($P$) are called the \emph{\textbf{infinite directions}} or \emph{\textbf{rays}} of $P$. Geometrically, char.cone($P$) is the set of all directions in which we can go for all $x\in P$ without leaving $P$.
+
+The \emph{\textbf{lineality space}} of $P$, denoted by lin.space($P$), is the linear space
+$$\mbox{lin.space}(P):=\mbox{char.cone}(P)\cap -\mbox{char.cone}(P)=\{y\in\K^n|Ay=0\}.$$
+If the lineality space has dimension zero, i.e., lin.space($P$)=$\{0\}$, $P$ is called \emph{\textbf{pointed}}.
+
+\section{Dimensions}
+An \emph{\textbf{affine combination}} of the points $x_1,\dots,x_k\in\K^n$ is a linear combination $x:=\sum_{i=1}^{k}\lambda_i x_i$ such that $\sum_{i=1}^{k}\lambda_i=1$ and $\lambda_i\in\K$ for all $1\leq i\leq k$. Given a set $X\subseteq \K^n$, the \emph{\textbf{affine hull}} of $X$, denoted by aff$(X)$ is defined to be set of all affine combinations of points from $X$. The points $x_1,\dots,x_k\in \K^n$ are called \emph{\textbf{affinely independent}} if $\sum_{i=1}^{k}\lambda_i x_i=0$ and $\sum_{i=1}^{k}\lambda_i=0$ imply that $\lambda_1=\dots=\lambda_k=0$.
+
+
+
+With the definitions above, the affine hull of $P$ satisfies the following property.
+
+The \emph{\textbf{dimension}} of $P$ is the dimension of its affine hull. If $P$ is of dimension $k$ if and only if there are $k+1$ affinely independent points in $P$. So by lemma above, the dimension of $P$ is equal to $n$ minus the rank of matrix $A\teq$.
+
+\begin{lemma}
+$\mbox{\emph{aff}}(P)=\{x\in\K^n|A\teq x=b\teq \}=\{x\in\K^n|A\teq x\leq b\teq \}$.
+\end{lemma}
+\begin{proof}
+\end{proof}
+
+
+\begin{theorem}
+$\mbox{\emph{dim}}(P)+\mbox{\emph{rk}}(A\teq)=n.$
+\end{theorem}
+$P$ is \emph{\textbf{full-dimensional}} if its dimension is $n$. Again, by lemma above, $P$ is full-dimensional if and only if there are no implicit equalities. Geometrically, any implicit inequality $a^T x=\beta$ contained in $P$ can be viewed as a hyperplane $H:=\{x~|~a^T x=\beta\}$. The inclusion implies that this polyhedron $P$ can be embedded into this hyperplane $H$. And since a hyperplane is of co-dimension one, one such hyperplane reduces the dimension of this polyhedron by one.
+
+\section{Faces}
+
+The inequality $c^T x\leqslant \delta$ is called a \emph{\textbf{valid inequality}} for $P$ if $\max\{c^T x: x\in P\}\leqslant \delta$,  i.e. it is satisfied by all points in $P$.  The corresponding hyperplane $H=\{x:c^T x=\delta\}$ is called the \emph{\textbf{valid hyperplane}}.
+
+Geometrically, $c^T x\leqslant \delta$ is a valid inequality if and only if $P$ lies in the half space $\{x:c^T x\leqslant \delta\}$ or equivalently if and only if $H\subseteq \{x:c^Tx\leqslant \delta\}$.
+
+In particular, if $c^\intercal x\leqslant \delta$ is a valid inequality for $P$, and $\delta=\max\{c^T x:Ax\leqslant b\}$, then hyperplane $H:=\{x:c^\mathsf{T} x=\delta\}$ is called a \emph{\textbf{supporting hyperplane}}, and we say the corresponding valid inequality $c^T x\leqslant \delta$ a \emph{\textbf{support}} of $P$.
+
+A subset $F$ of $P$ is called a \emph{\textbf{face}} of $P$ if $F=P$ or if $F=P\cap H$ where $H$ is supporting hyperplane of $P$. Directly we have:
+\begin{proposition}[Outer characterization]
+$F$ is a face of $P$ if and only if there is a vector $c$ for which $F$ is the set of vectors attaining $\max\{c^{\text{T}}x: x\in P\}$ provided that this maximum is finite(possibly $c=0$).
+\end{proposition}
+
+Alternatively,
+\begin{proposition}[Inner characterization]
+$F$ is a face of $P$ if and only if $F$ is nonempty and $F=\{x\in P : A^\prime x=b^\prime\}$ for some subsystem $A^\prime x\leqslant b^\prime$ of $Ax\leqslant b$.
+\end{proposition}
+\emph{Remark}: $A^\prime x\leqslant b^\prime$ is actually a subsystem of $A\tleq x\leqslant b\tleq$.
+
+To see that this is an equivalent characterization, let $F$ be a face of $P$, say $F=\{x\in P: c^T x=\delta\}$ for some vector $c$ with $\delta=\max\{c^T x:x\in P\}$. By the duality theorem of linear programming, $\delta=\min\{y^T b: y\geqslant 0, y^T A=c^T\}$. Let $y_0$ attain this minimum, and let $A^\prime x\leqslant b^\prime$ be the subsystem of $Ax\leqslant b$ consisting of those inequalities in $Ax\leq b$ which correspond to positive components of $y_0$. Then $F=\{x\in P:A^\prime x=b^\prime\}$, since if $c^T x=\delta \leftrightarrow\footnote{$c^T={y_0}^T A$ and $\delta={y_0}^T b$.} {y_0}^T Ax={y_0}^T b \Leftrightarrow A^\prime x=b^\prime$. Conversely, if $F=\{x\in P: A^\prime x=b^\prime\}$ is not empty, it is the set of points of $P$ attaining $\max\{c^T x:x\in P\}$, where $c$ is the sum of the rows of $A^\prime$\footnote{$\delta$ is the sum of elements of $b^\prime$, then $\delta=c^T x$ guarantees that $A^\prime x\leqslant b^\prime$ holds as $A^\prime x=b^\prime$.}.
+
+
+
+\section{Facets}
+A nontrivial face $F$ of $P$ is a \emph{\textbf{facet}} if $F$ is maximal under inclusion.
+
+Given a polyhedron $P$, the question we address below is to find out which of the inequalities $a^T x\leqslant \beta$ are necessary in the description of $P$ and which can be dropped.(irredundant) As a first step in discarding superfluous inequalities, we can  discard inequalities $a^T x\leqslant \beta$ that are not supports of $P$.
+
+A constraint in a constraint system is called \emph{\textbf{redundant}} if it is implied by the other constraints in the system. (So redundant constraints can be removed - however, deleting one redundant constraint can make other redundant constraints irredundant, so that generally  not all the redundant  constraints can be deleted at the same time.) The system is irredundant if it has no redundant constraints.
+
+\begin{theorem}
+If no inequalities in $A^\tleq x\leqslant b^\tleq$ is redundant in $Ax\leqslant b$, then there exists a one-to-one correspondence between the facets of $P$ and the inequalities in 
+\end{theorem}
+
+\section{Minimal faces and extreme points}
+
+\begin{proposition}
+Each minimal face of $P$ is a translation of the lineality space of $P$.
+\end{proposition}
+\begin{proof}
+\end{proof}
+
+
+\begin{lemma}
+$x$ is an extreme point of $P$ if and only if $x$ is a zero-deimensional face of $P$.
+\end{lemma}
+\begin{proof}
+It follows directly from the observations above.
+\end{proof}
+
+\section{Edges, rays and extreme rays}
+Again, let $t$ be the dimension of lineality space of $P$. Let $G$ be a face of $P$ of dimension $t+1$(the second minimal face in dimension). So facets of $G$ are minimal faces of $P$. Then there exists a subsystem $A^\prime x\leqslant b^\prime$ of $Ax\leqslant b$ with $\rk(A^\prime)=\rk(A)-1$, and there exist inequalities $a_1^T x\leqslant \beta_1$, $a_2^T x\leqslant \beta_2$(not necessarily distinct) from $Ax\leqslant b$ such that
+$$G=\{x:a_1^T x\leqslant \beta_1, a_2^T x\leqslant \beta_2, A^\prime x=b^\prime\}.$$
+
+\begin{proof}
+Since $G$ is a face of $P$, so $G=\{x\in P: \hat{A}x=\hat{b}\}$ where $\hat{A}x=\hat{b}$ is a subsystem of $A\tleq x\leqslant b\tleq$. By combining constraints $A\teq x=b\teq$, $A\tleq x\leqslant b\tleq$ and $\hat{A}x\leqslant \hat{b}$, one gets another representation $G=\{x:A^{\prime\prime} x\leqslant b^{\prime\prime}, A^\prime x=b^\prime\}$, with $A^{\prime\prime} \leqslant b^{\prime\prime}$ and $A^\prime x=b^\prime$ subsystems of $Ax\leqslant b$, with $A^{\prime\prime}$ as small as possible. Obviously, $A^\prime x=b^\prime$ contains all implicit equalities of the system $A^{\prime\prime} x\leqslant b^{\prime\prime}$, $A^\prime x=b^\prime$, since it contains $A\teq x=b\teq$ and $\hat{A}x=\hat{b}$. Hence $rk(A^\prime)=n-\dim(G)=n-t-1$. Since $\rk(A)=n-t$, the sets $\{x: a_j^T x=\beta_j , A^\prime x=b^\prime\}$, for $a_j^T x\leqslant \beta_j$ in $A^{\prime\prime}x\leqslant b^{\prime\prime}$, form parallel hyperplanes in the affine space $\{x:A^\prime x=b^\prime\}$.(First of all, $\{x: a_j^T x=\beta_j , A^\prime x=b^\prime\}$ is indeed a hyperplane of affine space $\{x:A^\prime x=b^\prime\}$. Recall that an affine hyperplane is an affine subspace of co-dimension 1 in a affine space. By its nature, it separates the space into 2 half spaces. Since $A^\prime x=b^\prime$ doesn't imply $a_j^T x=\beta_j$, otherwise $a_j^T x\leqslant \beta_j$ in $A^{\prime\prime}x\leqslant b^{\prime\prime}$ is an implicit equality. Moreover, it's redundant. So the dimension of affine subspace $\{x: a_j^T x=\beta_j , A^\prime x=b^\prime\}$ is one less than that of affine space $\{x:A^\prime x=b^\prime\}$, implying that $\{x: a_j^T x=\beta_j , A^\prime x=b^\prime\}$ is a hyperplane of $\{x:A^\prime x=b^\prime\}$. Second, let's show $\{x: a_i^T x=\beta_i , A^\prime x=b^\prime\}$ and $\{x: a_j^T x=\beta_j , A^\prime x=b^\prime\}$ are parallel hyperplanes, where $a_i^T x\leqslant\beta_i$ and $a_j^T x\leqslant \beta_j$ are from $A^{\prime\prime}x\leqslant b^{\prime\prime}$. It suffices to consider corresponding linear spaces $\{x: a_i^T x=0 , A^\prime x=0\}$ and $\{x: a_j^T x=0 , A^\prime x=0\}$. Since $rk{\binom{A^\prime}{a_i^T}}=rk{\binom{A^\prime}{a_j^T}}=n$, they are the same linear space as the lineality space $\{x:Ax=b\}$. Therefore, after translation they must be parallel.) Since no inequality of $A^{\prime\prime}x\leqslant b^{\prime\prime}$ is redundant in $A^{\prime\prime}x\leqslant b^{\prime\prime}, A^\prime x=b^\prime$, $A^{\prime\prime}$ has at most two rows.(Recall that the nature of hyperplane is to separate the space into 2 half spaces. Geometrically, we need at most two to indicate the feasible area determined by those parallel hyperplanes.)
+\end{proof}
+
+It follows that $G=\mbox{lin.space} P +l$, where $l$ is a line-segment or half-line. If $P$ is pointed(i.e. lin.space $P=\{0\}$), then $G$ is called \emph{\textbf{edge}} if $l$ is a line-segment, and $G$ is called an \emph{\textbf{ray}} if $l$ is a half line. It also follows that $G$ has at most two facets, being minimal faces of $P$. Two minimal faces of $P$ are called \emph{\textbf{adjacent}} or \emph{\textbf{neighboring}} if they are contained in one face of dimension $t+1$.
+
+A ray $y$ is called an \emph{\textbf{extreme ray}} if there do not exist rays $y_1$, $y_2\in\mbox{char.cone}(P)$, $y_1\not=\mu y_2$ for any $\mu\in\K_+$, such that $y=\lambda y_1+(1-\lambda)y_2$ for $0<\lambda<1$.
+
+\begin{theorem}[Characterization of extreme rays] \hfill
+Let $P\subseteq \K^n$ be a nonempty polyhedron. Then the following statement are equivalent:
+\begin{enumerate}
+  \item[\emph{(i)}] $y$ is an extreme ray of $P$;
+  \item[\emph{(ii)}] $\{\lambda y: \lambda\in R_+\}$ is a one-dimensional face of char.cone$(P)$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Let $A_{F}\teq y\leq 0$ be the subsystem of implicity equalities associated with face $F:=\{y\in\mbox{char.cone}(P):A^\prime y=0\}$, where $A^\prime y\leq 0$ is a subsystem of $Ay\leq 0$.
+
+ (i)$\Rightarrow$(ii)  Let $F$ be the smallest face of $\mbox{char.cone}(P)$ containing $\{\lambda y:\lambda\in\K_+\}$. If $\mbox{dim}(F)>1$, we have $\mbox{rk}(A_F\teq)<n-1$. There exists $y_0\not=\mu y$, $\mu\in\K$ such that $A_F\teq y_0=0$. Then for sufficiently small $\epsilon>0$, we have $y\pm \epsilon y_0\in \mbox{char.cone}(P)$, since $A_F\teq y=0$ and $A_F\teq y_0=0$ and $A_F\tleq y<0$. But then $y=\frac{1}{2}(y+\epsilon y_0)+\frac{1}{2}(y-\epsilon y_0)$, contradicting the fact that $y$ is an extreme ray. So $\mbox{dim}(F)\leq 1$. Since $y\not=0$, then $1\leq \mbox{dim}(\{\lambda y: \lambda\in\K_+\})\leq \mbox{dim}(F)\leq 1$. Hence, $F=\{\lambda y: \lambda\in\K_+\}$ has dimension 1.
+
+(ii)$\Rightarrow$(i) Let $F=\{\lambda y:\lambda\in\K_+\}$, a one-dimensional face of char.cone$(P)$, then $\mbox{rk}(A_F\teq)=n-1$. Hence all solutions of $A_F\teq y=0$ are of form $\lambda y$, where $\lambda\in R$. If there exist rays $y_1$, $y_2\in\mbox{char.cone}(P)$ with $y_1\not=\mu y_2$ and $\mu\in\K_+$, such that $y=\lambda y_1+(1-\lambda)y_2$ for some $0<\lambda<1$, it follows that $0=A_F\teq y=A_F\teq[\lambda y_1+(1-\lambda)y_2]=\lambda A_F\teq y_1+(1-\lambda)A_F\teq y_2\leq 0$. Hence $y_1$ and $y_2$ are solutions of $A_F\teq y=0$, so they must be linear, a contradiction.
+\end{proof}
+
+\section{Extreme rays of characteristic cone}
+
+
+\section{Decomposition of polyhedra}
+
+
+\section*{References}
+\beginrefs
+\bibentry{CW87}{\sc D.~Coppersmith} and {\sc S.~Winograd},
+``Matrix multiplication via arithmetic progressions,''
+{\it Proceedings of the 19th ACM Symposium on Theory of Computing},
+1987, pp.~1--6.
+\endrefs
+
+% **** THIS ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
+
+\end{document}
+
+
+
+
+
+
+

@@ -1,0 +1,249 @@
+
+\documentclass{article}
+
+\setlength{\oddsidemargin}{0.05 in}
+\setlength{\evensidemargin}{-0.05 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{9.5 in}
+\setlength{\headsep}{0.25 in}
+\setlength{\parskip}{0.1 in}
+
+%
+% ADD PACKAGES here:
+\usepackage [usenames] {color}
+\definecolor {infocolor} {rgb} {0.6,0.6,0.6}
+\definecolor {steel blue}{rgb}{0.274510,0.509804,0.705882}
+\everymath{\color{steel blue}}
+\everydisplay{\color{steel blue}}
+%
+
+\usepackage{amsmath,amsfonts,amssymb,enumerate,graphicx}
+
+%
+% The following commands set up the lecnum (lecture number)
+% counter and make various numbering schemes work relative
+% to the lecture number.
+%
+\newcounter{lecnum}
+\renewcommand{\thepage}{\thelecnum-\arabic{page}}
+\renewcommand{\thesection}{\thelecnum.\arabic{section}}
+\renewcommand{\theequation}{\thelecnum.\arabic{equation}}
+\renewcommand{\thefigure}{\thelecnum.\arabic{figure}}
+\renewcommand{\thetable}{\thelecnum.\arabic{table}}
+
+\DeclareMathOperator{\rk}{rk}
+
+\newcommand{\tran}{^{\mbox{\tiny $\top$}}}
+\newcommand{\tleq}{^{\mbox{\tiny $\leqslant$}}}
+\newcommand{\teq}{^{\mbox{\tiny $=$}}}
+
+%
+% The following macro is used to generate the header.
+%
+\newcommand{\lecture}[2]{
+   \pagestyle{myheadings}
+   \thispagestyle{plain}
+   \newpage
+   \setcounter{lecnum}{#1}
+   \setcounter{page}{1}
+   \noindent
+   \begin{center}
+       \vbox{\vspace{2mm}
+         \hbox {\leftline{\Large LECTURE #1: \hfill}}
+         \vspace{3mm}
+         \hbox {\leftline{\Large #2 \hfill}}
+         \vspace{4mm}
+         \hrule
+         \vspace{3mm}
+         \hbox to 6.5in { {{\large Polyhedral Theory}  \hfill April 2013} }
+         \vspace{3mm}
+        }
+   \end{center}
+   \markboth{LECTURE #1: #2}{LECTURE #1: #2}
+   \pagenumbering{arabic}
+   \vspace*{4mm}
+}
+%
+% Convention for citations is authors' initials followed by the year.
+% For example, to cite a paper by Leighton and Maggs you would type
+% \cite{LM89}, and to cite a paper by Strassen you would type \cite{S69}.
+% (To avoid bibliography problems, for now we redefine the \cite command.)
+% Also commands that create a suitable format for the reference list.
+\renewcommand{\cite}[1]{[#1]}
+\def\beginrefs{\begin{list}%
+        {[\arabic{equation}]}{\usecounter{equation}
+         \setlength{\leftmargin}{2.0truecm}\setlength{\labelsep}{0.4truecm}%
+         \setlength{\labelwidth}{1.6truecm}}}
+\def\endrefs{\end{list}}
+\def\bibentry#1{\item[\hbox{[#1]}]}
+
+%Use this command for a figure; it puts a figure in wherever you want it.
+%usage: \fig{NUMBER}{SPACE-IN-INCHES}{CAPTION}
+\newcommand{\fig}[3]{
+            \vspace{#2}
+			\begin{center}
+			Figure \thelecnum.#1:~#3
+			\end{center}
+	}
+% Use these for theorems, lemmas, proofs, etc.
+\newtheorem{theorem}{Theorem}[lecnum]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newenvironment{proof}{{\it Proof.}}{ \hfill $\square$}
+
+% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+
+\def\R{{\mathbb R}}
+\def\Q{{\mathbb Q}}
+\def\K{{\mathbb K}}
+
+\begin{document}
+%FILL IN THE RIGHT INFO.
+%\lecture{**LECTURE-NUMBER**}{**DATE**}{**LECTURER**}{**SCRIBE**}
+\lecture{3}{Duality of polyhedra}
+%\footnotetext{These notes are partially based on those of Nigel Mansell.}
+
+% **** YOUR NOTES GO HERE:
+
+% Some general latex examples and examples making use of the
+% macros follow.
+%**** IN GENERAL, BE BRIEF. LONG SCRIBE NOTES, NO MATTER HOW WELL WRITTEN,
+%**** ARE NEVER READ BY ANYBODY.
+
+
+In this section, we offer a general treatment of duality of polyhedra. There are more than one kind of duality for polyhedra. Polar duality in polyhedra is a very interesting notation. It implies that two basic representation conversions between interior representation(V(ertex)-representation)  and exterior representation(H(yperplane)-representation). Besides the classical polarity, there are the blocking and anti-blocking relations between polyhedra which plays an important role in polyhedral combinatorics.
+
+\section*{Correspondence between points and hyperplanes}
+Recall that a hyperplane is a affine subspace of co-dimension 1. Besides a hyperplane of $\R^n$ can be represented as the solution set of one ((in)homogeneous) linear equation
+\begin{equation}
+H:=\{x\in\R^n|a^Tx=\beta\}
+\end{equation}
+where $a\in\R^n$, $a\not=0$, $\beta\in\R$. The vector $a$ is the so-called norm vector, which is orthogonal to the hyperplane $H=\{x|a^Tx=\beta\}$. 
+
+In a sense, points and hyperplanes behave int he same way. Since the norm vector $a$ can be viewed as a point in $\R^n$. Conversely, every point $a$ can be viewed as a norm vector of a hyperplane $H=\{x|a^Tx=\beta\}$. 
+
+From this observation, we would like to extend this correspondence to subsets of Euclidean space, in particular, to polyhedra. We still follow the routine of studying polyhedral cones first then generating the results to general polyhedra.
+
+(Actually, there is another way of introducing polar duality of polyhedra by using the notation of origin-avoiding hyperplane and unit sphere. Personally, even though this definition is closely related with the definition of polar, I don't like the like way of introduction, since there are two singularities in their definition. One is the origin point $0$; The other is the hyperplane containing the origin $0$. Their definition does not work for that two cases.)
+
+\section{Polar of cones}
+Since there is a natural correspondence between points and hyperplanes. So in the study of cones, points in cones are of special interest. Since each points $p\in C$ corresponds to a set of parallel hyperplanes $\{x|a^Tx=\beta\}$. In this study, we might restrict ourselves in the most special case, those hyperplanes through the origin.
+
+Polar (dual) of cone $C\subseteq \K^n$ is 
+\begin{equation}
+C^*:=\{z\in\K^n|z^Tx\leq 0 \mbox{~for~all~}x\in C\}
+\end{equation}
+
+\section{Polar of polyhedra}
+
+Since we can always associate a polyhedron with a polyhedral cone, and the polar dual of a polyhedral cone is defined above, there is a natural way to define the polar of a polyhedron $P\subseteq \K^n$. First, let $C(P)\subseteq \K^n\times\K_{+}$ denote the homogenization. Next, construct $C^*(P)$, the polar of $C(P)$ and define the polar $P^*$ of $P$ to be the negative de-homogenization of $C^*(P)$. 
+
+After the definition of polarity of polyhedra, we may now specialize further and assume that $P$ is a full-dimensional polyhedron. By translation, we can take the origin $0$ to be the interior point, so if $a_i^Tx\leqslant \beta_i$, is an equality describing $P$, the $\beta_i>0$. Hence, by normalizing vector $b$, we can rewritten $P$ as $P=\{x\in\K^n|Ax\leqslant 1\}$, where $1\in \K^n$. (That's actually where the definition in the Schrijver's book come from, a special case.)
+
+\begin{corollary}
+If $P$ is full-dimensional, pointed, and the origin $0$ is its interior, there is a one-to-one correspondence between the facets of $P$ and the extreme points of $P^*$.
+\end{corollary}
+More specifically,
+\begin{theorem}
+If P is full-dimensional and pointed, and 0 is an interior point of $P$, then
+\begin{enumerate}
+\item $P=\{z_i^T x\leqslant 1 \mbox{~for~all~}xz_i\in Z\}$, where $Z$ is the extreme points of $P^*$, and\\
+\end{enumerate}
+\end{theorem}
+
+\section{Blocking polyhedra}
+Throughout the discussion of blocking and anti-blocking polyhedra, we assume that all polyhedra we talk about are \emph{pointed}. 
+
+We say that a convex set $P\subseteq \K^n$ is of \emph{\textbf{blocking type}} if $P$ is closed convex up-monotone subset of $\K_+^n$. Moreover, we say a polyhedron $P$ in $\K^n$ is of blocking type if $P\subseteq\K_+^n$ and if $y\geqslant x\in P$ implies $y\in P$.
+
+Now let's investigate the representations of a polyhedron of blocking type. We consider the inner representation first. Since $P$ is pointed, so $P$ is of blocking type if and only if
+$P=\mbox{conv}(X)+\mbox{char}(P)$, where $X\subseteq \K_+^n$ is the set of extreme points of $P$, and $\mbox{char}(P)=\K_+^n$. In the following, we consider the outer representation. Recall that $P$ is full-dimensional if and only if $P$ has an interior point, which has a intuitive geometric interpretation. Similarly, we may see that $P$ need not to be full-dimensional to guarantee the existence of an exterior point(a point violates all the valid inequalities). So let's consider a polyhedron $P=\{x\in\K_+^n|Ax\geqslant b\}$. By translation, we can make sure the origin $0$ is an exterior point of $P$. It follows that $b>0$, otherwise some $\beta_j\leqslant 0$ implies that corresponding inequality is valid for the origin $0$. So by normalizing $b$, the outer representation of $P$ can be rewritten as $P=\{x\in\K_+^n|Ax\geqslant 1\}$. Then $P$ is of blocking type if and only if $A\K_+^n\geqslant 0$ which implies that $A$ is a nonnegative matrix.
+
+\begin{proposition}
+A polyhedron of blocking type has two equivalent characterizations:
+\begin{enumerate}
+\item $P=\mbox{\emph{conv}}\{x_1,\dots,x_s\}^{\uparrow}$, for some vectors $x_1,\dots,x_s\in\K_+^n$.
+\item $P=\{x\in\K_+^n|Ax\geqslant 1\}$,
+for some nonnegative matrix $A$.
+\end{enumerate}
+\end{proposition}
+
+It follows that $P$ is a polyhedron of blocking type if and only if there exist vectors $x_1,\dots,x_s\in\K_+^n$ such that
+\begin{equation}
+P=\mbox{conv}\{x_1,\dots,x_s\}^{\uparrow};
+\end{equation}
+and also, if and only if 
+\begin{equation}
+P=\{z\in\K_+^n|Ax\geqslant 1\}
+\end{equation}
+for some nonnegative matrix $A$.
+
+For any polyhedron $P$ in $\K^n$, the \emph{\textbf{blocker}} $P^B$ of $P$ is defined by 
+\begin{equation}
+P^B=\{z\in K_+^n |z^T x\geqslant 1 \mbox{~for~all~}x\in P\}.
+\end{equation}
+
+In the following, we will show that the nonegative matrix $A$ is the matrix consisting of all the extreme points of $P^B$ as rows.
+
+\begin{theorem}
+Let $P=\{x\in K_+^n|Ax\geqslant 1\}$, where $A$ is a nonnagtive matrix with no zero rows. Then
+\begin{enumerate}
+\item $P^B=\{z\in \K_+^n| Bz\geqslant 1\}$ and\\
+\item $(P^B)^B=P$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+The inclusion $\subseteq$ is trivial. Since $x_i+\lambda y_j$ for all $\lambda\geqslant 0$ are in $P$, it follows that $z^T x_i\geqslant 1$ for all $x_i\in X$. The converse inclusion follows directly from the observation that $\mbox{char}(P)=\K_+^n$. If $z\in\{z\in\K_+^n|z^T x\geqslant 1\}$, then for any $x=\sum_{x_i\in X}\lambda_i x_i+y$ in $P$,  where $\sum_{x_i\in X}\lambda_i=1$ and $y\in\mbox{char}(P)$, $z^T x=z^T(\sum_{x_i\in X}\lambda_i x_i+y)\geqslant \sum_{x_i\in X}\lambda_i=1$.
+
+Since $P$ is full dimensional, 
+\end{proof}
+
+Since throughout the whole notes, we proceed in a manner deducing the inner representation from outer representation. So in this place, we adopt a different way of introducing blocking and anti-blocking polyhedra. Instead of starting with the inner representation of characterization of blocking polyhedra, we adopt the most general and most comfortable way to deduce the inner representation of blocking polyhedra from outer representation to inner representation. At last, we will arrive at the equivalence of the two representations.
+
+For remained of this section, we assume that $A$ is a \textbf{nonnegative} $m\times n$ matrix.
+
+Suppose that $P=\{x\in\K_+^n|Ax\geqslant 1\}$, where $A$ has no zero rows. The \emph{\textbf{blocker}} $P^B$ of $P$ is the polyhedron:
+\begin{equation*}
+P^B:=\{z\in K_+^n |z^T x\geqslant 1 \mbox{~for~all~}x\in P\}.
+\end{equation*}
+
+Let $B$ be the $\lvert X\rvert \times n$ matrix whose rows are the extreme points $X$ in $P$.
+
+\begin{proposition}
+Let $P=\{x\in K_+^n|Ax\geqslant 1\}$, where $A$ is a nonnagtive matrix with no zero rows. Then
+\begin{enumerate}
+\item $P^B=\{z\in \K_+^n| Bz\geqslant 1\}$ and\\
+\item $(P^B)^B=P$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+The inclusion $\subseteq$ is trivial. Since $x_i+\lambda y_j$ for all $\lambda\geqslant 0$ are in $P$, it follows that $z^T x_i\geqslant 1$ for all $x_i\in X$. The converse inclusion follows directly from the observation that $\mbox{char}(P)=\K_+^n$. If $z\in\{z\in\K_+^n|z^T x\geqslant 1\}$, then for any $x=\sum_{x_i\in X}\lambda_i x_i+y$ in $P$,  where $\sum_{x_i\in X}\lambda_i=1$ and $y\in\mbox{char}(P)$, $z^T x=z^T(\sum_{x_i\in X}\lambda_i x_i+y)\geqslant \sum_{x_i\in X}\lambda_i=1$.
+
+Since $P$ is full dimensional, 
+\end{proof}
+\section{Antiblocking polyhedra}
+
+
+\section*{References}
+\beginrefs
+\bibentry{CW87}{\sc D.~Coppersmith} and {\sc S.~Winograd},
+``Matrix multiplication via arithmetic progressions,''
+{\it Proceedings of the 19th ACM Symposium on Theory of Computing},
+1987, pp.~1--6.
+\endrefs
+
+% **** THIS ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
+
+\end{document}
+
+
+
+
+
+
+
+
