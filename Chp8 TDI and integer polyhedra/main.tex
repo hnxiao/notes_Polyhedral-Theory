@@ -60,7 +60,7 @@
          \vspace{4mm}
          \hrule
          \vspace{3mm}
-         \hbox to 6.5in { {{\large Polyhedral Theory in CO and ILP}  \hfill Mar. 2015} }
+         \hbox to 6.5in { {{\Large \sc Combinatorial Optimization - Polyhedral Theory}  \hfill Mar. 2015} }
          \vspace{3mm}
         }
    \end{center}
@@ -109,7 +109,7 @@
 \begin{document}
 %FILL IN THE RIGHT INFO.
 %\lecture{**LECTURE-NUMBER**}{**DATE**}{**LECTURER**}{**SCRIBE**}
-\lecture{7}{Integer polyhedra and TDI}
+\lecture{7}{Totally Dual Integrality and Hilbert Basis}
 %\footnotetext{These notes are partially based on those of Nigel Mansell.}
 
 % **** YOUR NOTES GO HERE:
@@ -119,22 +119,32 @@
 %**** IN GENERAL, BE BRIEF. LONG SCRIBE NOTES, NO MATTER HOW WELL WRITTEN,
 %**** ARE NEVER READ BY ANYBODY.
 
-\section{TDI}
+\section{Totally Dual Integrality}
 
-A lecture note on CS 598CSC: Combinatorial Optimization given by Chandra Chekuri from
-illinois.edu can be found from the link given below.
+\begin{definition}
+A rational system of inequalities $Ax\leq b$ is totally dual integral (TDI) if, for all integral $c$, $\min\{yb:y\geq 0, ya=c\}$ is attained by an integral vector $y^*$ whenever the optimum exists and is finite.
+\end{definition}
 
-https://courses.engr.illinois.edu/cs598csc/sp2010/lectures/lecture12.pdf
+\begin{proposition}
+If $A$ is TUM, $Ax\leq b$ is TDI for all $b$.
+\end{proposition}
 
-The note gives some insights on the relation between TDIness and TUM, say
+\begin{theorem}
+If $Ax\leq b$ is TDI and $b$ is integral, then $\{x:Ax\leq b\}$ is an integral polyhedron.
+\end{theorem}
 
-if $A$ is TUM, $Ax\leq b$ is TDI for all $b$, or
+This is useful because $Ax\leq b$ may be TDI even if $A$ is not TUM, or in other words, the TDIness of a linear system is a weaker sufficient condition for integrality of $\{x:Ax\leq b\}$ and moreover guarantees that the dual is integral whenever the prime objective vector is integral.
 
-$Ax\leq b$ may be TDI even if $A$ is not TUM, or in other words, the TDIness of a linear
-system is a weaker sufficient condition for integrality of $\{x:Ax\leq b\}$ and moreover guarantees 
-that the dual is integral whenever the prime objective vector is integral.
+It is important to note that TDIness is \emph{not}  a property of the polyhedron, but of its representation (linear system). In fact, the following theorem states that any rational polyhedron has a TDI representation.
 
+\begin{theorem}[Edmonds-Giles, 1979]
+Let $P$ be a rational polyhedron. Then, there exists $A$, $b$ such that $P=\{x:Ax\leq b\}$, $Ax\leq b$ is TDI and $A$ is integral.
+\end{theorem}
 
+To illustrate this point, consider the following 2-dimensinal polytope (refer to Figure 1) defined as 
+\[
+P=\mbox{conv}\{(0,0),(3,0),(2,2),(0,3)\}.
+\]
 
 \begin{figure}[h!]
   \centering
@@ -143,7 +153,7 @@ that the dual is integral whenever the prime objective vector is integral.
       \draw[thick,black] (5,0) node [right] {$x_1$}; 
       \draw[thick,-latex] (0,-0.5) -- (0,5);
       \draw[thick] (0,5) node [above] {$x_2$}; 
-      \draw[thick] (-0.2,0) node [below] {0}; 
+      \draw[thick] (-0.5,0) node [below] {\footnotesize (0,0)}; 
       \draw[thin, dashed, -latex] (2,2) -- (4,3);
       \draw[thin, dashed, -latex] (2,2) -- (3,4);
       \draw[thin, -latex] (2,2) -- (3,3);
@@ -154,20 +164,26 @@ that the dual is integral whenever the prime objective vector is integral.
       \draw[thin,-latex, fill=gray, fill opacity=0.3] (0,0) -- (3,0) --
         (2,2) -- (0,3) -- cycle;
 
-      \draw[thick] (3.4,2.9) node [above] {\small $(1,1)$}; 
-      \draw[thick] (4.2,3.03) node [below] {\small $(2,1)$}; 
-      \draw[thick] (2.5,4.2) node [below] {\small $(1,2)$}; 
-      \draw[thick] (3,0) node [below] {3}; 
-      \draw[thick] (4,0) node [below] {4}; 
-      \draw[thick] (0,3) node [left] {3}; 
-      \draw[ultra thick] (0,4) node [left] {4}; 
-      \draw[thick] (1.5,1.5) node [above] {\small $(2,2)$}; 
+      \draw[thick] (3.4,2.9) node [above] {\footnotesize $(1,1)$}; 
+      \draw[thick] (4.2,3.03) node [below] {\footnotesize $(2,1)$}; 
+      \draw[thick] (2.5,4.2) node [below] {\footnotesize $(1,2)$}; 
+      \draw[thick] (3,0) node [below] {\footnotesize (3,0)}; 
+      \draw[thick] (4,0) node [below] {\footnotesize (4,0)}; 
+      \draw[thick] (0,3) node [left] {\footnotesize (0,3)}; 
+      \draw[ultra thick] (0,4) node [left] {\footnotesize (0,4)}; 
+      \draw[thick] (2,1.95) node [right] {\footnotesize $(2,2)$}; 
+      \draw[thick] (1,2.6) node [right] {\footnotesize $x_1+2x_2=6$};
+      \draw[thick] (2.5,1) node [right] {\footnotesize $2x_1+x_2=6$};
+      
+      \draw[thick] (1.25,1.5) node [below] {$P$};
+      \draw[thick] (3.2,3.5) node [right] {$C$};
 
     \end{tikzpicture}
-  \caption{The cone $C$ and the polytope $Z$}
+  \caption{The cone $C$ and the polytope $P$}
 \end{figure}
 
-Note that TDI is a property of a system of inequalities, \emph{not} a property of the corresponding polyhedron. Systems
+
+This polyotpe may have many different representations. For example, linear systems
 \[
 \left\{ x\in \R^2~:~
 \begin{array}{l}    
@@ -185,17 +201,22 @@ Note that TDI is a property of a system of inequalities, \emph{not} a property o
     {\color{red} x_1+x_2\leq 4}\\
     {\color{red} x_1\leq 3,~x_2\leq 3}
 \end{array}
-\right\}
+\right\}.
 \]
-define the same polyhedron $P=\mbox{conv}\{(0,0),(3,0),(2,2),(0,3)\}$. But the first system, however, is not TDI. For example, if we take the cost vector $c^T$ to be $(1,1)$, then the primal maximum is achieved by $(2,2)$ with value $4$. But $(1,1)$ cannot be expressed as a linear integer combination of $(1,2)$ and $(2,1)$, the normal vectors of the tight constraints at point $(2,2)$. Therefore, there is no integral dual optimum and the first system is not TDI.
 
-Nevertheless, after extending the first system with some redundant constraints, we have an additional normal vector at $(2,2)$, namely, $(1,1)$. And now $(1,1)$ is an integer combination of the normal vectors at $(2,2)$. Moreover, the second system is in fact TDI.
+The first system is nevertheless not TDI. For example, if we take the cost vector $c^T$ to be $(1,1)$, then the primal maximum is achieved by $(2,2)$ with value $4$. But $(1,1)$ cannot be expressed as a linear integer combination of $(1,2)$ and $(2,1)$, the normal vectors of the tight constraints at point $(2,2)$. Thus, there is no integral dual optimum and the first system is not TDI.
+
+However, the first system sheds some light on the requirement of TDIness. After extending the first system with some redundant constraints, we have an additional normal vector at $(2,2)$, namely, $(1,1)$. And now $(1,1)$ is an integer combination of the normal vectors at $(2,2)$. Moreover, the second system is in fact TDI.
 
 And this example also shows that a TDI-system usually contains more constraints than necessary for defining the polyhedron.
 
-A deeper look into this example actually gives necessary for a system to be TDI. We explain this in general context. Consider the problem $\max\{c^T x|Ax\leq b\}$ with $c$ integral, and assume it has finite optimum $\delta$. Then it is achieved by some vector $x^*$ in the face $F$ defined by the intersection of $x|Ax\leq b$ with the hyperplane $c^T x=\delta$. For simplicity assume that the face $F$ is an extreme point of the polyhedron and let $A'x=b'$ be the set of all inequalities in $Ax\leq b$ that are tight at $x^*$. The dual is $\min\{y^T b|y\geq 0, y^T A=c\}$. By LP duality theory, $c$ can be expressed as a non-negative combination of the row vectors of $A'$(, in other words $c$ is in the cone of the row vector of $A'$). As entries of $y$ corresponding to non-tight constraints in $A$ must be $0$. TDI of $Ax\leq b$ requires that there is an integer solution to $yA'=c,y\geq 0$ for any integral $c$. (Geometrically, any integral $c$ in the cone generated by row vectors of $A'$ can be expressed as a non-negative combination of row vectors of $A'$.) Recall that every rational cone admits a Hilbert basis, of which each integral vector in this cone can be expressed as the non-negative integer combination. This observation motivates the following theorem, which reveals the the realtion between TDI and Hilbert bases.
+A deeper look into this example actually gives necessary for a system to be TDI. We explain this in general context. Consider the problem $\max\{c^T x|Ax\leq b\}$ with $c$ integral, and assume it has finite optimum $\delta$. Then it is achieved by some vector $x^*$ in the face $F$ defined by the intersection of $\{x|Ax\leq b\}$ with the hyperplane $c^T x=\delta$. For simplicity assume that the face $F$ is an extreme point of the polyhedron and let $A'x=b'$ be the set of all inequalities in $Ax\leq b$ that are tight at $x^*$. The dual is $\min\{y^T b|y\geq 0, y^T A=c\}$. By LP duality theory, $c$ can be expressed as a non-negative combination of the row vectors of $A'$(, in other words $c$ is in the cone of the row vector of $A'$). As entries of $y$ corresponding to non-tight constraints in $A$ must be $0$. TDI of $Ax\leq b$ requires that there is an integer solution to $yA'=c,y\geq 0$ for any integral $c$. (Geometrically, any integral $c$ in the cone generated by row vectors of $A'$ can be expressed as a non-negative combination of row vectors of $A'$.) Recall that every rational cone admits a Hilbert basis, of which each integral vector in this cone can be expressed as the non-negative integer combination. This observation motivates the following theorem, which reveals the the realtion between TDI and Hilbert bases. (or in some notes, the definition of Hilbert basis is introduced in the following chapter.) 
 
-\section{TDI system and Hilbert bases}
+\section{Hilbert basis}
+\begin{definition}[Hilbert basis]
+A set of vectors 
+\end{definition}
+
 
 \begin{theorem}
 The rational system $Ax\leq b$ is TDI if and only if for each face $F$ of the polyhedron $P:=\{x|Ax\leq b\}$, the rows of $A$ which are tight in $F$ form a Hilbert basis.
@@ -277,10 +298,16 @@ Successively considering the dual cones corresponding to the vertices $(0,0)$, $
 
 \section*{References}
 \beginrefs
-\bibentry{CW87}{\sc D.~Coppersmith} and {\sc S.~Winograd},
-``Matrix multiplication via arithmetic progressions,''
-{\it Proceedings of the 19th ACM Symposium on Theory of Computing},
-1987, pp.~1--6.
+\bibentry{1}{\sc A.~Schrijver},
+``Theory of Linear and Integer Programming''.
+\bibentry{2}Lecture notes from Michael Goemans's class on Combinatorial Optimization. 
+
+http://math.mit.edu/~goemans/18438F09/lec6.pdf
+
+\bibentry{3}Lecture notes from Chandra Chekuri's class on Combinatorial Optimization.
+
+https://courses.engr.illinois.edu/cs598csc/sp2010/lectures/lecture12.pdf
+
 \endrefs
 
 % **** THIS ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
